@@ -1,91 +1,31 @@
-.. include:: header.rst
+from fpdf import FPDF
+from io import BytesIO
+import fitz  # PyMuPDF
 
-.. This is the TOC in the sidebar!
+# Crear un PDF
+pdf = FPDF()
+pdf.add_page()
 
-.. raw:: html
+# Título
+pdf.set_font("Arial", 'B', 16)
+pdf.cell(0, 10, 'Career Portfolio: Computer Science', ln=True, align='C')
 
-   <style>
+# Sección: Carrera que deseo
+pdf.set_font("Arial", 'B', 14)
+pdf.cell(0, 10, 'Career I Desire', ln=True)
+pdf.set_font("Arial", '', 12)
+pdf.multi_cell(0, 10, (
+    "I aspire to pursue a career in Computer Science. This field involves the study of computers and computational "
+    "systems, including their theory, design, development, and application."
+))
 
-      .toc-drawer {
-         display: none;
-      }
+# Insertar imagen
+pdf.image("path_to_your_image.jpg", x=10, y=pdf.get_y() + 10, w=50)
 
-      .main .content {
-         width:  100% !important;
-      }
+# Guardar el contenido del PDF en un búfer de bytes
+pdf_buffer = BytesIO()
+pdf_output = pdf.output(dest=pdf_buffer).encode('latin-1')
 
-   </style>
-
-Welcome to |PyMuPDF|
-================================
-
-|PyMuPDF| is a high-performance **Python** library for data extraction, analysis, conversion & manipulation of **PDF** (and other) documents.
-
-|PyMuPDF| is hosted on `GitHub <https://github.com/pymupdf/PyMuPDF>`_ and registered on `PyPI <https://pypi.org/project/PyMuPDF/>`_.
-
-
-----
-
-This documentation covers all versions up to |version|.
-
-----
-
-.. toctree::
-   :caption: About
-   :maxdepth: 1
-
-   about.rst
-
-
-.. toctree::
-   :caption: User Guide
-   :maxdepth: 1
-
-   installation.rst
-   the-basics.rst
-   tutorial.rst
-   rag.rst
-   resources.rst
-
-
-
-.. toctree::
-   :caption: How to Guide
-   :maxdepth: 3
-
-   recipes.rst
-
-
-.. toctree::
-   :caption: API Reference
-   :maxdepth: 2
-
-   module.rst
-   classes.rst
-   algebra.rst
-   lowlevel.rst
-   glossary.rst
-   vars.rst
-   colors.rst
-
-
-.. toctree::
-   :caption: Other
-   :maxdepth: 2
-
-   app1.rst
-   app2.rst
-   app3.rst
-   app4.rst
-   changes.rst
-   znames.rst
-
-|
-----
-
-
-
-.. include:: footer.rst
-
-
-
+# Guardar el contenido del búfer en un archivo binario
+with open("Career_Portfolio_CS.pdf", "wb") as f:
+    f.write(pdf_output)
